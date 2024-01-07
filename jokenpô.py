@@ -3,9 +3,6 @@ from pygame.locals import *
 from random import randint
 
 class Card:
-    '''def __new__(cls, *args):
-        new_card= object.__new__(cls, args)
-        return new_card'''
     def __init__(self, x:int, y:int , img:str, scale: int):
         self.x= x
         self.y= y
@@ -30,18 +27,12 @@ class Card:
             else: self.mouse_pressed= False
         else: self.mouse_up= False
 
-    def destroy(self):
-        pass
 
 class Player:
     def __init__(self,  listCards: list):
         self.scores= 0
         self.cards= listCards
-
-        def select_cards(self):
-            pass
-        def drop_cards(self):
-            pass
+        self.select_card=False
 
 class Game:
     def __init__(self):
@@ -49,7 +40,7 @@ class Game:
 
         self.screen= pygame.display.set_mode((600,600))
         pygame.display.set_caption("Jokenpô")
-        self.play = False
+        self.play = True
 
         self.stone_card= Card(0,400, "assets/carta_pedra.png",3)
         self.paper_card= Card(0,400, "assets/carta_papel.png",3)
@@ -63,7 +54,6 @@ class Game:
 
         self.back_card= Card(0,10, "assets/carta_verso.png",3)
         self.back_card_bot= Card(0,10, "assets/carta_verso.png",2)
-
 
         self.player= Player([self.stone_card, self.paper_card, self.scissors_card])
         self.bot= Player([self.stone_card2, self.paper_card2, self.scissors_card2])
@@ -81,41 +71,43 @@ class Game:
             x2+=83
 
     def interface(self):
-        for card in self.player.cards:
-            self.screen.blit(card.img, (card.x, card.y))
-            card.update()
+        if self.play:
+            for card in self.player.cards:
+                self.screen.blit(card.img, (card.x, card.y))
+                card.update()
+                
+                if not self.player.select_card:
+                    #MOUSE_UP
+                    if card.mouse_up: 
+                        card.y = 395
+                        #MOUSE_PRESSED
+                        if card.mouse_pressed:
+                            if not self.player.select_card:
+                                self.cards_on_the_table[0]= card
+                                self.cards_on_the_table[0].x=150
+                                self.cards_on_the_table[0].y=171
+                                self.player.cards.remove(self.cards_on_the_table[0])
+                                self.player.select_card= True
+                    else: card.y=400
 
-            #MOUSE_UP
-            if card.mouse_up: 
-                card.y = 395
-                #MOUSE_PRESSED
-                if card.mouse_pressed:
-                    self.cards_on_the_table[0]= self.back_card
-                    self.player.cards.remove(card)
-                    try:
-                        self.cards_on_the_table[1]= self.bot.cards[int(randint(0, len(self.bot.cards)))]
-                        self.bot.cards.remove(self.cards_on_the_table[1])
-                    except:
-                        self.cards_on_the_table[1]= self.bot.cards[int(randint(0, len(self.bot.cards)))]
-                        self.bot.cards.remove(self.cards_on_the_table[1])
-            else: card.y=400
+            for card in self.bot.cards:
+                self.screen.blit(self.back_card_bot.img, (card.x, card.y))
+                card.update()
 
-        for card in self.bot.cards:
-            self.screen.blit(self.back_card_bot.img, (card.x, card.y))
-            card.update()
+                if self.player.select_card and not self.bot.select_card:
+                    try: self.cards_on_the_table[1]= self.bot.cards[(randint(0, len(self.bot.cards)))]
+                    except: self.cards_on_the_table[1]= self.bot.cards[(randint(0, len(self.bot.cards)))]
+                    self.cards_on_the_table[1].x=330
+                    self.cards_on_the_table[1].y=171
 
-            if self.cards_on_the_table[0]== self.back_card:
-                self.cards_on_the_table[1]= self.back_card
-                #self.cards_on_the_table[1]= self.bot.cards[randint(0, len(self.bot.cards))]
-                #self.bot.cards.remove(self.cards_on_the_table[1])
+                    self.bot.cards.remove(self.cards_on_the_table[1])
+                    self.bot.select_card=True   
 
-            if not self.cards_on_the_table[0] in self.player.cards:
-                self.screen.blit(self.cards_on_the_table[0].img, (150, 171))
-
-            if not self.cards_on_the_table[1] in self.bot.cards:
-                self.screen.blit(self.cards_on_the_table[1].img, (330, 171))
-
-
+            for card in self.cards_on_the_table:
+                if self.player.select_card and self.bot.select_card:
+                    self.screen.blit(card.img, (card.x, card.y))
+                    card.update()
+             
     def main(self):
         while True:
             self.screen.fill((0,0,0))
