@@ -86,6 +86,7 @@ class Game:
                             self.cards_on_the_table[0]= card
                             self.player.cards.remove(self.cards_on_the_table[0])
                             self.player.select_card= True
+                else: card.y=400
 
             for card in self.bot.cards:
                 self.screen.blit(self.back_card_bot.img, (card.x, card.y))
