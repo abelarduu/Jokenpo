@@ -13,11 +13,14 @@ class Card:
         self.w= self.img.get_width()
         self.h= self.img.get_height()
 
+        if "pedra" in img:self.type="pedra"
+        if "papel" in img:self.type="papel"
+        if "tesoura" in img:self.type="tesoura"
+
         self.mouse_up= False
         self.mouse_pressed= False
 
     def update(self):
-
         self.img_rect= self.img.get_rect(center=(self.x + self.img.get_width()/2, self.y + self.img.get_height()/2))
         #Mouse Up
         if self.img_rect.collidepoint(pygame.mouse.get_pos()):
@@ -35,18 +38,19 @@ class Player:
         self.cards= cards
         self.select_card=False
 
-    def draw_cards(self, screen, padx, pady):
+    def update_cards(self, screen, padx, pady):
         x=int((screen.get_size()[0]/2-padx) -(padx/2))
         for card in self.cards:
+            if card.mouse_up and card.y>20:
+                card.y = screen.get_size()[1] - card.h -20
+            else: card.y= pady
             card.x= x
-            card.y= pady
             x+=padx
 
 class Game:
     def __init__(self):
         pygame.init()
-
-        self.screen= pygame.display.set_mode((600,600), RESIZABLE)
+        self.screen= pygame.display.set_mode()
         pygame.display.set_caption("Jokenpô")
         self.play = True
 
@@ -58,18 +62,18 @@ class Game:
         self.paper_card2= Card(0,0, "assets/carta_papel.png",3)
         self.scissors_card2= Card(0,0, "assets/carta_tesoura.png",3)
 
-
         self.back_card= Card(0,0, "assets/carta_verso.png",3)
         self.back_card_bot= Card(0,0, "assets/carta_verso.png",2)
+        self.deck= Card(0,0, "assets/baralho.png", 3)
 
         self.player= Player([self.stone_card, self.paper_card, self.scissors_card])
         self.bot= Player([self.stone_card2, self.paper_card2, self.scissors_card2])
-        self.cards_on_the_table= [self.stone_card, self.stone_card]
+        self.cards_on_the_table= [self.deck, self.deck, self.deck]
 
     def draw_interface(self):
         if self.play:
-            self.player.draw_cards(self.screen, 125, self.screen.get_size()[1] - self.player.cards[0].h -10)
-            self.bot.draw_cards(self.screen, 82, 10)
+            self.player.update_cards(self.screen, self.player.cards[0].w + 4 * len(self.player.cards), self.screen.get_size()[1] - self.player.cards[0].h -10)
+            self.bot.update_cards(self.screen, self.back_card_bot.w + 2 * len(self.bot.cards), 10)
        
             for card in self.player.cards:
                 self.screen.blit(card.img, (card.x, card.y))
@@ -77,8 +81,7 @@ class Game:
                 
                 if not self.player.select_card:
                     #MOUSE_UP
-                    if card.mouse_up: 
-                        card.y = self.screen.get_size()[1] - card.h -20
+                    if card.mouse_up:
                         #MOUSE_PRESSED
                         if card.mouse_pressed:
                             if not self.player.select_card:
@@ -92,21 +95,32 @@ class Game:
                 card.update()
 
                 if self.player.select_card and not self.bot.select_card:
-                    try: self.cards_on_the_table[1]= self.bot.cards[(randint(0, len(self.bot.cards)))]
-                    except: self.cards_on_the_table[1]= self.bot.cards[(randint(0, len(self.bot.cards)))]
-                    self.bot.cards.remove(self.cards_on_the_table[1])
+                    try: self.cards_on_the_table[2]= self.bot.cards[(randint(0, len(self.bot.cards)))]
+                    except: 
+                        try: self.cards_on_the_table[2]= self.bot.cards[(randint(0, len(self.bot.cards)))]
+                        except: self.cards_on_the_table[2]= self.bot.cards[(randint(0, len(self.bot.cards)))]
+                    self.bot.cards.remove(self.cards_on_the_table[2])
                     self.bot.select_card=True   
 
             for card in self.cards_on_the_table:
                 if self.player.select_card and self.bot.select_card:
-                    self.cards_on_the_table[0].x=self.screen.get_size()[0]/2 - self.screen.get_size()[0]/5 -card.w/2
-                    self.cards_on_the_table[0].y=self.screen.get_size()[1]/2 - card.h/2-30
+                    self.cards_on_the_table[0].x=self.screen.get_size()[0]/2 - self.screen.get_size()[0]/4 -card.w/2
+                    self.cards_on_the_table[0].y=self.screen.get_size()[1]/2 - card.h/2
                     
-                    self.cards_on_the_table[1].x=self.screen.get_size()[0]/2 + self.screen.get_size()[0]/5 - card.w/2
-                    self.cards_on_the_table[1].y=self.screen.get_size()[1]/2 - card.h/2-30
-                    self.screen.blit(card.img, (card.x, card.y))
-                    card.update()
-                
+                    self.cards_on_the_table[2].x=self.screen.get_size()[0]/2 + self.screen.get_size()[0]/4 - card.w/2
+                    self.cards_on_the_table[2].y=self.screen.get_size()[1]/2 - card.h/2
+
+                    if self.cards_on_the_table[0].type == self.cards_on_the_table[2].type:
+                        self.player.cards.append(self.cards_on_the_table.pop(0))
+                        self.bot.cards.append(self.cards_on_the_table.pop(2))
+                        self.player.select_card= False
+                        self.bot.select_card= False
+
+                self.cards_on_the_table[1].x=self.screen.get_size()[0]/2 - card.w/2
+                self.cards_on_the_table[1].y=self.screen.get_size()[1]/2 - card.h/2
+                self.screen.blit(card.img, (card.x, card.y))
+                card.update()
+
 
     def main(self):
         while True:
