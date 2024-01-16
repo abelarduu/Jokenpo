@@ -81,44 +81,22 @@ class Game:
         if self.cards_on_the_table[0].type == self.cards_on_the_table[1].type:
             self.bot.cards.append(self.cards_on_the_table.pop())
             self.player.cards.append(self.cards_on_the_table.pop())
-            self.cards_on_the_table= [self.deck, self.deck]
-            self.player.chosen_card= False
-            self.bot.chosen_card= False
 
-        elif self.cards_on_the_table[0].type == "rock" and self.cards_on_the_table[1].type == "scissors":
-            self.bot.cards.append(self.cards_on_the_table.pop())
-            self.cards_on_the_table= [self.deck, self.deck]
-            self.player.chosen_card= False
-            self.bot.chosen_card= False
-
-        elif self.cards_on_the_table[0].type == "paper" and self.cards_on_the_table[1].type == "rock":
-            self.bot.cards.append(self.cards_on_the_table.pop())
-            self.cards_on_the_table= [self.deck, self.deck]
-            self.player.chosen_card= False
-            self.bot.chosen_card= False
-
-        elif self.cards_on_the_table[0].type == "scissors" and self.cards_on_the_table[1].type == "paper":
-            self.bot.cards.append(self.cards_on_the_table.pop())
-            self.cards_on_the_table= [self.deck, self.deck]
-            self.player.chosen_card= False
-            self.bot.chosen_card= False
-
-        else:
-            self.player.cards.append(self.cards_on_the_table.pop(0))
-            self.cards_on_the_table= [self.deck, self.deck]
-            self.player.chosen_card= False
-            self.bot.chosen_card= False
+        elif self.cards_on_the_table[0].type == "rock" and self.cards_on_the_table[1].type == "scissors":   self.bot.cards.append(self.cards_on_the_table.pop(1))
+        elif self.cards_on_the_table[0].type == "paper" and self.cards_on_the_table[1].type == "rock":      self.bot.cards.append(self.cards_on_the_table.pop(1))
+        elif self.cards_on_the_table[0].type == "scissors" and self.cards_on_the_table[1].type == "paper":  self.bot.cards.append(self.cards_on_the_table.pop(1))
+        else:self.player.cards.append(self.cards_on_the_table.pop(0))
 
     def draw_interface(self):
         if self.play:
             #Player.cards
             for card in self.player.cards:
-                self.player.update_cards(self.screen, self.player.cards[0].w + 4 * len(self.player.cards), self.screen.get_size()[1] - self.player.cards[0].h -10)
+                self.player.update_cards(self.screen, card.w + 4 * len(self.player.cards), self.screen.get_size()[1] - card.h -10)
                 self.screen.blit(card.img, (card.x, card.y))
+                
                 if card.mouse_pressed:
                     if not self.player.chosen_card:
-                        try: self.cards_on_the_table[0]= self.player.select_card(card)
-                        except: self.cards_on_the_table[0]= self.player.select_card(card)
+                        self.cards_on_the_table[0]= self.player.select_card(card)
                    
             #Bot.cards
             for card in self.bot.cards:
@@ -126,13 +104,14 @@ class Game:
                 self.screen.blit(self.back_card_bot.img, (card.x, card.y))
 
                 if self.player.chosen_card and not self.bot.chosen_card:
-                    try: self.cards_on_the_table[1]= self.bot.select_card(self.bot.cards[randint(0, len(self.bot.cards)-1)])
-                    except: self.cards_on_the_table[1]= self.bot.select_card(self.bot.cards[randint(0, len(self.bot.cards)-1)])
+                    self.cards_on_the_table[1]= self.bot.select_card(self.bot.cards[randint(0, len(self.bot.cards)-1)])
 
             #Cards on the table
             for card in self.cards_on_the_table:
                 if self.flip_card: self.screen.blit(card.img, (card.x, card.y))
-                else: self.screen.blit(self.back_card.img, (card.x, card.y))
+                else:
+                    if card.y < self.screen.get_size()[1]-192-20:
+                        self.screen.blit(self.back_card.img, (card.x, card.y))
                 card.update()
 
                 if self.player.chosen_card and self.bot.chosen_card:
@@ -147,9 +126,12 @@ class Game:
 
                     if self.flip_card and pygame.mouse.get_pressed()[0]:
                         self.verify_cards()
+                        self.cards_on_the_table= [self.deck, self.deck]
+                        self.player.chosen_card= False
+                        self.bot.chosen_card= False
                         self.flip_card= False
 
-                #Deck
+            #Deck
             self.deck.x=self.screen.get_size()[0]/2 - self.deck.w/2
             self.deck.y=self.screen.get_size()[1]/2 - self.deck.h/2
             self.screen.blit(self.deck.img, (self.deck.x, self.deck.y))
