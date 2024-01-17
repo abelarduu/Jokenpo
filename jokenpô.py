@@ -79,22 +79,22 @@ class Game:
 
     def verify_cards(self):
         if self.cards_on_the_table[0].type == self.cards_on_the_table[1].type:
-            self.bot.cards.append(self.cards_on_the_table.pop())
-            self.player.cards.append(self.cards_on_the_table.pop())
+            self.bot.cards.append(self.cards_on_the_table.pop(1))
+            self.player.cards.append(self.cards_on_the_table.pop(0))
 
         elif self.cards_on_the_table[0].type == "rock" and self.cards_on_the_table[1].type == "scissors":   self.bot.cards.append(self.cards_on_the_table.pop(1))
         elif self.cards_on_the_table[0].type == "paper" and self.cards_on_the_table[1].type == "rock":      self.bot.cards.append(self.cards_on_the_table.pop(1))
         elif self.cards_on_the_table[0].type == "scissors" and self.cards_on_the_table[1].type == "paper":  self.bot.cards.append(self.cards_on_the_table.pop(1))
         else:self.player.cards.append(self.cards_on_the_table.pop(0))
 
-    def draw_interface(self):
+    def draw_interface(self):            
         if self.play:
             #Player.cards
             for card in self.player.cards:
                 self.player.update_cards(self.screen, card.w + 4 * len(self.player.cards), self.screen.get_size()[1] - card.h -10)
                 self.screen.blit(card.img, (card.x, card.y))
                 
-                if card.mouse_pressed:
+                if card.mouse_pressed and card.y <self.screen.get_size()[1] - card.h -10:
                     if not self.player.chosen_card:
                         self.cards_on_the_table[0]= self.player.select_card(card)
                    
@@ -115,11 +115,11 @@ class Game:
                 card.update()
 
                 if self.player.chosen_card and self.bot.chosen_card:
-                    self.cards_on_the_table[0].x=self.screen.get_size()[0]/2 - self.screen.get_size()[0]/4 -self.cards_on_the_table[0].w/2
-                    self.cards_on_the_table[0].y=self.screen.get_size()[1]/2 - self.cards_on_the_table[0].h/2
+                    self.cards_on_the_table[0].x=self.screen.get_size()[0]/2 - self.screen.get_size()[0]/4 -card.w/2
+                    self.cards_on_the_table[0].y=self.screen.get_size()[1]/2 - card.h/2
                     
-                    self.cards_on_the_table[1].x=self.screen.get_size()[0]/2 + self.screen.get_size()[0]/4 - self.cards_on_the_table[1].w/2
-                    self.cards_on_the_table[1].y=self.screen.get_size()[1]/2 - self.cards_on_the_table[1].h/2
+                    self.cards_on_the_table[1].x=self.screen.get_size()[0]/2 + self.screen.get_size()[0]/4 - card.w/2
+                    self.cards_on_the_table[1].y=self.screen.get_size()[1]/2 - card.h/2
 
                     if pygame.mouse.get_pressed()[2]:
                         self.flip_card= True
