@@ -62,7 +62,7 @@ class Game:
 
         self.play = True
         self.flip_card= False
-        self.deck= Card(0,0, "assets/deck.png", 3)
+        self.deck= Card(0,0, "assets/deck_card.png", 3)
         self.back_card= Card(0,0, "assets/back_card.png",3)
         self.back_card_bot= Card(0,0, "assets/back_card.png",2)
         self.cards_on_the_table= [self.deck, self.deck]
@@ -136,7 +136,7 @@ class Game:
             
     def main(self):
         while True:
-            self.screen.fill((0,0,0))
+            self.screen.fill((112,198,169))
             self.draw_interface()
             pygame.display.update()
 
