@@ -41,7 +41,8 @@ class Player:
         x=int((screen.get_size()[0]/2-padx) -(padx/2))
         for card in self.cards:
             card.update()
-            if card.mouse_up and card.y>20:card.y = screen.get_size()[1] - card.h -20
+            if card.mouse_up and card.y>20:
+                card.y = screen.get_size()[1] - card.h -20
             else: card.y= pady
             card.x= x
             x+=padx
@@ -63,8 +64,10 @@ class Game:
         self.flip_card= False
         self.deck= Card(0,0, "assets/deck_card.png", 3)
         self.back_card= Card(0,0, "assets/back_card.png",3)
+        self.back_card2= Card(0,0, "assets/back_card.png",3)
         self.back_card_bot= Card(0,0, "assets/back_card.png",2)
-        self.cards_on_the_table= [self.deck, self.deck]
+        self.rect_pos_card= Card(0,0, "assets/rect_pos_card.png",3)
+        self.cards_on_the_table= [self.back_card, self.back_card2]
 
         self.player= Player([Card(0,0, "assets/rock_card.png",3),
                              Card(0,0, "assets/paper_card.png",3),
@@ -86,14 +89,22 @@ class Game:
 
     def draw_interface(self):            
         if self.play:
+            #Deck
+            self.deck.x=self.screen_w/2 - self.deck.w/2
+            self.deck.y=self.screen_h/2 - self.deck.h/2
+            self.screen.blit(self.deck.img, (self.deck.x, self.deck.y))
+
             #Player.cards
             for card in self.player.cards:
                 self.player.update_cards(self.screen, card.w + 4 * len(self.player.cards), self.screen_h - card.h -10)
                 self.screen.blit(card.img, (card.x, card.y))
-                
-                if card.mouse_pressed and card.y < self.screen_h - card.h -10:
-                    if not self.player.chosen_card:
-                        self.cards_on_the_table[0]= self.player.select_card(card)
+
+                if card.mouse_up:
+                    self.screen.blit(self.rect_pos_card.img, (card.x-6, card.y-6))
+
+                    if card.mouse_pressed and card.y < self.screen_h - card.h -10:
+                        if not self.player.chosen_card:
+                            self.cards_on_the_table[0]= self.player.select_card(card)
                    
             #Bot.cards
             for card in self.bot.cards:
@@ -105,34 +116,30 @@ class Game:
 
             #Cards on the table
             for card in self.cards_on_the_table:
-                if self.flip_card: self.screen.blit(card.img, (card.x, card.y))
-                else:
-                    if card.y < self.screen_h-192-20:
-                        self.screen.blit(self.back_card.img, (card.x, card.y))
+                self.cards_on_the_table[0].x=self.screen_w/2 - self.screen_w/4 -card.w/2
+                self.cards_on_the_table[1].x=self.screen_w/2 + self.screen_w/4 - card.w/2
+                self.cards_on_the_table[0].y=self.screen_h/2 - card.h/2
+                self.cards_on_the_table[1].y=self.screen_h/2 - card.h/2
                 card.update()
-
+                
                 if self.player.chosen_card and self.bot.chosen_card:
-                    self.cards_on_the_table[0].x=self.screen_w/2 - self.screen_w/4 -card.w/2
-                    self.cards_on_the_table[0].y=self.screen_h/2 - card.h/2
-                    
-                    self.cards_on_the_table[1].x=self.screen_w/2 + self.screen_w/4 - card.w/2
-                    self.cards_on_the_table[1].y=self.screen_h/2 - card.h/2
-
-                    if pygame.mouse.get_pressed()[2]:
-                        self.flip_card= True
+                    if self.flip_card: 
+                        self.screen.blit(card.img, (card.x, card.y))
+                    else:
+                        if card.y < self.screen_h-192-20:
+                            self.screen.blit(self.back_card.img, (card.x, card.y))
+                        if pygame.mouse.get_pressed()[2]:
+                            self.flip_card= True
 
                     if self.flip_card and pygame.mouse.get_pressed()[0]:
                         self.verify_cards()
-                        self.cards_on_the_table= [self.deck, self.deck]
+                        self.cards_on_the_table= [self.back_card, self.back_card2]
                         self.player.chosen_card= False
                         self.bot.chosen_card= False
                         self.flip_card= False
+                self.screen.blit(self.rect_pos_card.img, (card.x-6, card.y-6))
 
-            #Deck
-            self.deck.x=self.screen_w/2 - self.deck.w/2
-            self.deck.y=self.screen_h/2 - self.deck.h/2
-            self.screen.blit(self.deck.img, (self.deck.x, self.deck.y))
-            
+
     def main(self):
         while True:
             self.screen.fill((112,198,169))
