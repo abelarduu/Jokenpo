@@ -12,14 +12,13 @@ class Card:
         self.img_rect= self.img.get_rect(center=(self.x + self.img.get_width()/2, self.y + self.img.get_height()/2))
         self.w= self.img.get_width()
         self.h= self.img.get_height()
+        self.mouse_up= False
+        self.mouse_pressed= False
 
         if "rock" in img:self.type="rock"
         elif "paper" in img:self.type="paper"
         elif "scissors" in img:self.type="scissors"
         else: self.type= "deck"
-
-        self.mouse_up= False
-        self.mouse_pressed= False
 
     def update(self):
         self.img_rect= self.img.get_rect(center=(self.x + self.img.get_width()/2, self.y + self.img.get_height()/2))
@@ -120,7 +119,6 @@ class Game:
                 self.cards_on_the_table[1].x=self.screen_w/2 + self.screen_w/4 - card.w/2
                 self.cards_on_the_table[0].y=self.screen_h/2 - card.h/2
                 self.cards_on_the_table[1].y=self.screen_h/2 - card.h/2
-                card.update()
                 
                 if self.player.chosen_card and self.bot.chosen_card:
                     if self.flip_card: 
@@ -137,8 +135,9 @@ class Game:
                         self.player.chosen_card= False
                         self.bot.chosen_card= False
                         self.flip_card= False
-                self.screen.blit(self.rect_pos_card.img, (card.x-6, card.y-6))
 
+                self.screen.blit(self.rect_pos_card.img, (card.x-6, card.y-6))
+                card.update()
 
     def main(self):
         while True:
