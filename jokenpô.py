@@ -58,15 +58,18 @@ class Game:
         self.screen= pygame.display.set_mode()
         self.screen_w, self.screen_h= self.screen.get_size()
         pygame.display.set_caption("Jokenpô")
+        pygame.mouse.set_visible(False)
 
+        #Interface Objects
         self.play = False
         self.flip_card= False
         self.img= pygame.image.load("assets/icon.png")
         self.icon= pygame.transform.scale(self.img, (self.img.get_width()*5, self.img.get_height()*5))
-        
+        self.mouse= Object(0,0, "assets/mouse.png",2)
         self.btn_play= Object(0,0,"assets/btn_up.png",5)
         self.btn_play_down= Object(0,0,"assets/btn_down.png",5)
 
+        #Cards
         self.deck= Object(0,0, "assets/deck_card.png", 3)
         self.back_card= Object(0,0, "assets/back_card.png",3)
         self.back_card2= Object(0,0, "assets/back_card.png",3)
@@ -92,7 +95,7 @@ class Game:
         elif self.cards_on_the_table[0].type == "scissors" and self.cards_on_the_table[1].type == "paper":  self.bot.cards.append(self.cards_on_the_table.pop(1))
         else:self.player.cards.append(self.cards_on_the_table.pop(0))
 
-    def draw_interface(self):            
+    def draw_interface(self):
         if self.play:
             #Deck
             self.deck.x=self.screen_w/2 - self.deck.w/2
@@ -162,6 +165,7 @@ class Game:
         while True:
             self.screen.fill((112,198,169))
             self.draw_interface()
+            self.screen.blit(self.mouse.img, (pygame.mouse.get_pos()))
             pygame.display.update()
 
             for event in pygame.event.get():
