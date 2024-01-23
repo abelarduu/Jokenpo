@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 from random import randint
 
-class Card:
+class Object:
     def __init__(self, x:int, y:int , img:str, scale: int):
         self.x= x
         self.y= y
@@ -32,7 +32,7 @@ class Card:
 
 class Player:
     def __init__(self,  cards: list):
-        self.scores= 0
+        self.defeats= 0
         self.cards= cards
         self.chosen_card=False
 
@@ -59,22 +59,28 @@ class Game:
         self.screen_w, self.screen_h= self.screen.get_size()
         pygame.display.set_caption("Jokenpô")
 
-        self.play = True
+        self.play = False
         self.flip_card= False
-        self.deck= Card(0,0, "assets/deck_card.png", 3)
-        self.back_card= Card(0,0, "assets/back_card.png",3)
-        self.back_card2= Card(0,0, "assets/back_card.png",3)
-        self.back_card_bot= Card(0,0, "assets/back_card.png",2)
-        self.rect_pos_card= Card(0,0, "assets/rect_pos_card.png",3)
+        self.img= pygame.image.load("assets/icon.png")
+        self.icon= pygame.transform.scale(self.img, (self.img.get_width()*5, self.img.get_height()*5))
+        
+        self.btn_play= Object(0,0,"assets/btn_up.png",5)
+        self.btn_play_down= Object(0,0,"assets/btn_down.png",5)
+
+        self.deck= Object(0,0, "assets/deck_card.png", 3)
+        self.back_card= Object(0,0, "assets/back_card.png",3)
+        self.back_card2= Object(0,0, "assets/back_card.png",3)
+        self.back_card_bot= Object(0,0, "assets/back_card.png",2)
+        self.rect_pos_card= Object(0,0, "assets/rect_pos_card.png",3)
         self.cards_on_the_table= [self.back_card, self.back_card2]
 
-        self.player= Player([Card(0,0, "assets/rock_card.png",3),
-                             Card(0,0, "assets/paper_card.png",3),
-                             Card(0,0, "assets/scissors_card.png",3)])
+        self.player= Player([Object(0,0, "assets/rock_card.png",3),
+                             Object(0,0, "assets/paper_card.png",3),
+                             Object(0,0, "assets/scissors_card.png",3)])
             
-        self.bot= Player([Card(0,0, "assets/rock_card.png",3),
-                             Card(0,0, "assets/paper_card.png",3),
-                             Card(0,0, "assets/scissors_card.png",3)])
+        self.bot= Player([Object(0,0, "assets/rock_card.png",3),
+                             Object(0,0, "assets/paper_card.png",3),
+                             Object(0,0, "assets/scissors_card.png",3)])
 
     def verify_cards(self):
         if self.cards_on_the_table[0].type == self.cards_on_the_table[1].type:
@@ -138,6 +144,19 @@ class Game:
 
                 self.screen.blit(self.rect_pos_card.img, (card.x-6, card.y-6))
                 card.update()
+        
+        else:
+            #Menu Inicial
+            self.screen.blit(self.icon, (self.screen_w/2 - self.icon.get_width()/2, self.screen_h/2 - self.icon.get_height()/2 - self.btn_play.h/2))
+            self.btn_play.x= self.screen_w/2 - self.icon.get_width()/2
+            self.btn_play.y= self.screen_h/2 + self.btn_play.h/2+55
+            self.btn_play.update()
+
+            if self.btn_play.mouse_up:
+                self.screen.blit(self.btn_play.img, (self.btn_play.x, self.btn_play.y))
+                if self.btn_play.mouse_pressed: 
+                    self.play= True
+            else: self.screen.blit(self.btn_play_down.img, (self.btn_play.x, self.btn_play.y))
 
     def main(self):
         while True:
