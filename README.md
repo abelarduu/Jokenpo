@@ -1,4 +1,7 @@
 <div align="center">
+<header>
+<img src="img/icon.png" type="image/png" alt="Ache O Anel Icon">
+</header>
 
 <div>
 
