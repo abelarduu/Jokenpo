@@ -32,9 +32,13 @@ class Object:
 
 class Player:
     def __init__(self,  cards: list):
-        self.defeats= 0
+        self.win= []
         self.cards= cards
         self.chosen_card=False
+        
+        self.rect_round= Object(0,0,"assets/rect_round.png",3)
+        self.rect_round_win= Object(0,0,"assets/rect_round_win.png",3)
+
 
     def update_cards(self, screen, padx, pady):
         x=int((screen.get_size()[0]/2-padx) -(padx/2))
@@ -52,6 +56,15 @@ class Player:
             self.chosen_card= True
             return card
 
+    def HUD(self,screen, hud):
+        padx=0
+
+        screen.blit(hud.img, (hud.x, hud.y))
+        for value in self.win:
+            if value: screen.blit(self.rect_round_win.img,(hud.x + padx, 130))
+            else: screen.blit(self.rect_round.img,(hud.x + padx, 130))
+            padx+=15 + self.rect_round.w
+
 class Game:
     def __init__(self):
         pygame.init()
@@ -68,7 +81,18 @@ class Game:
         self.mouse= Object(0,0, "assets/mouse.png",2)
         self.btn_play= Object(0,0,"assets/btn_up.png",5)
         self.btn_play_down= Object(0,0,"assets/btn_down.png",5)
+        
 
+        self.hud_player= Object(0,0,"assets/hud_player.png",3)
+        self.hud_bot= Object(0,0,"assets/hud_bot.png",3)
+        self.rect_round= Object(0,0,"assets/rect_round.png",3)
+        
+        self.hud_bot.x= self.screen_w - self.hud_bot.w
+        self.reset()
+        
+    def reset(self):
+        self.play = False
+        self.flip_card= False
         #Cards
         self.deck= Object(0,0, "assets/deck_card.png", 3)
         self.back_card= Object(0,0, "assets/back_card.png",3)
@@ -85,18 +109,53 @@ class Game:
                              Object(0,0, "assets/paper_card.png",3),
                              Object(0,0, "assets/scissors_card.png",3)])
 
+
     def verify_cards(self):
         if self.cards_on_the_table[0].type == self.cards_on_the_table[1].type:
             self.bot.cards.append(self.cards_on_the_table.pop(1))
             self.player.cards.append(self.cards_on_the_table.pop(0))
 
-        elif self.cards_on_the_table[0].type == "rock" and self.cards_on_the_table[1].type == "scissors":   self.bot.cards.append(self.cards_on_the_table.pop(1))
-        elif self.cards_on_the_table[0].type == "paper" and self.cards_on_the_table[1].type == "rock":      self.bot.cards.append(self.cards_on_the_table.pop(1))
-        elif self.cards_on_the_table[0].type == "scissors" and self.cards_on_the_table[1].type == "paper":  self.bot.cards.append(self.cards_on_the_table.pop(1))
-        else:self.player.cards.append(self.cards_on_the_table.pop(0))
+        elif self.cards_on_the_table[0].type == "rock" and self.cards_on_the_table[1].type == "scissors":   
+            self.bot.cards.append(self.cards_on_the_table.pop(1))
+            self.player.win.append(True)
+            self.bot.win.append(False)
+
+        elif self.cards_on_the_table[0].type == "paper" and self.cards_on_the_table[1].type == "rock":      
+            self.bot.cards.append(self.cards_on_the_table.pop(1))
+            self.player.win.append(True)
+            self.bot.win.append(False)
+
+        elif self.cards_on_the_table[0].type == "scissors" and self.cards_on_the_table[1].type == "paper":  
+            self.bot.cards.append(self.cards_on_the_table.pop(1))
+            self.player.win.append(True)
+            self.bot.win.append(False)
+
+        else:
+            self.player.cards.append(self.cards_on_the_table.pop(0))
+            self.bot.win.append(True)
+            self.player.win.append(False)
+
+    def draw_HUD(self):
+        self.screen.blit(self.hud_player.img, (self.hud_player.x, self.hud_player.y))
+        self.screen.blit(self.hud_bot.img, (self.hud_bot.x, self.hud_bot.y))
+
+        x1=0
+        for value in self.player.win:
+            if value: self.screen.blit(self.rect_round_win.img,(self.hud_player.x + x1, 130))
+            else:self.screen.blit(self.rect_round.img,(self.hud_player.x + x1, 130))
+            x1+=15 + self.rect_round.w
+
+        x2=0
+        for value in self.bot.win:
+            if value: self.screen.blit(self.rect_round_win.img,(self.hud_bot.x + self.hud_bot.w - self.rect_round.w + x2, 130))
+            else:self.screen.blit(self.rect_round.img,(self.hud_bot.x + self.hud_bot.w - self.rect_round.w -x2, 130))
+            x2+=15 + self.rect_round.w
 
     def draw_interface(self):
         if self.play:
+            #HUD
+            self.player.HUD(self.screen, self.hud_player)   
+            self.bot.HUD(self.screen, self.hud_bot)
             #Deck
             self.deck.x=self.screen_w/2 - self.deck.w/2
             self.deck.y=self.screen_h/2 - self.deck.h/2
@@ -147,6 +206,8 @@ class Game:
 
                 self.screen.blit(self.rect_pos_card.img, (card.x-6, card.y-6))
                 card.update()
+
+
         
         else:
             #Menu Inicial
