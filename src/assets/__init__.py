@@ -2,18 +2,22 @@ import pygame
 from os import listdir
 from os.path import abspath, dirname
 
-def image_dir():
-    return abspath(dirname(__file__)+"/images")
+def files_dir(folder_name:str):
+    return abspath(dirname(__file__)+f"/{folder_name}")
+    
+def get_sound(name_file:str, scale:int):
+    if name_file in get_files("mp3", "sounds"):
+        return img_scale
 
 def get_image(name_file:str, scale:int):
-    if name_file  in get_images():
-        img=pygame.image.load(f"{image_dir()}/{name_file}")
+    if name_file in get_files("png", "images"):
+        img=pygame.image.load(f"{files_dir("images")}/{name_file}")
         img_scale=pygame.transform.scale(img, (img.get_width()*scale, img.get_height()*scale))
         return img_scale
 
-def get_images() ->list:
-    images= listdir(image_dir())
-    for file in images:
-        if not ".png" in file:
-            images.remove(file)
-    return images
+def get_files(file_extension:str, folder_name:str) ->list:
+    files= listdir(files_dir(folder_name))
+    for file in files:
+        if not file_extension in file:
+            files.remove(file)
+    return files
