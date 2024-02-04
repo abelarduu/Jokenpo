@@ -6,11 +6,10 @@ from random import randint
 
 class Game():
     def __init__(self):
-        self.play= True
+        self.play= False
         self.flip_card= False
         self.timer= pygame.time.Clock()
         self.cards_on_the_table= [back_card, back_card2]
-
     def reset(self):
         pass
 
@@ -96,8 +95,21 @@ class Game():
                         player.chosen_card= False
                         bot.chosen_card= False
                         self.flip_card= False
-
                 screen.blit(rect_pos_card.img, (card.x-6, card.y-6))
+        else:
+            #Menu Inicial
+            screen.blit(icon, (screen_w/2 - icon.get_width()/2, screen_h/2 - icon.get_height()/2 - btn_play.h/2))
+            btn_play.x= screen_w/2 - icon.get_width()/2
+            btn_play.y= screen_h/2 + btn_play.h/2+55
+            btn_play.update()
+
+            if btn_play.mouse_up:
+                screen.blit(btn_play.img, (btn_play.x, btn_play.y))
+                if btn_play.mouse_pressed: 
+                    self.play= True
+
+            else: screen.blit(btn_play_down.img, (btn_play.x, btn_play.y))
+        #MOUSE
         screen.blit(mouse, pygame.mouse.get_pos())
 
     def main(self):
