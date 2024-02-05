@@ -10,6 +10,7 @@ class Game():
         self.flip_card= False
         self.timer= pygame.time.Clock()
         self.cards_on_the_table= [back_card, back_card2]
+        
     def reset(self):
         pass
 
@@ -71,7 +72,8 @@ class Game():
                 self.cards_on_the_table[1].x=screen_w/2 + screen_w/4 - card.w/2
                 self.cards_on_the_table[0].y=screen_h/2 - card.h/2
                 self.cards_on_the_table[1].y=screen_h/2 - card.h/2
-
+                card.update()
+                
                 if player.chosen_card and bot.chosen_card:
                     if self.flip_card:
                         screen.blit(card.img, (card.x, card.y))
@@ -85,7 +87,7 @@ class Game():
                     else:
                         if card.y < screen_h- card.h -20:
                             screen.blit(back_card.img, (card.x, card.y))
-                            if pygame.mouse.get_pressed()[2]:
+                            if card.mouse_up and pygame.mouse.get_pressed()[2]:
                                 self.flip_card= True
 
                     if self.flip_card and pygame.mouse.get_pressed()[0]:

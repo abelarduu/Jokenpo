@@ -5,9 +5,11 @@ from os.path import abspath, dirname
 def files_dir(folder_name:str):
     return abspath(dirname(__file__)+f"/{folder_name}")
     
-def get_sound(name_file:str, scale:int):
+def get_sound(name_file:str):
     if name_file in get_files("mp3", "sounds"):
-        return img_scale
+        pygame.mixer.init()
+        sound= pygame.mixer.Sound(f"{files_dir("sounds")}/{name_file}")
+        return sound
 
 def get_image(name_file:str, scale:int):
     if name_file in get_files("png", "images"):

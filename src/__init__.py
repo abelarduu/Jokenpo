@@ -29,6 +29,9 @@ back_card_bot= Card(0,0, "back_card.png", 2)
 deck_card= Card(0,0, "deck_card.png", 3)
 rect_pos_card= Card(0,0, "rect_pos_card.png", 3)
 
+#Sounds
+sound_mouse_up=assets.get_sound("mouse_up.mp3")
+
 #Players
 player= Player([Card(0,0, "rock_card.png", 3),
                 Card(0,0, "paper_card.png", 3),
