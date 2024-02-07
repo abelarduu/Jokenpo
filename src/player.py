@@ -3,8 +3,8 @@ import pygame
 
 class Player:
     def __init__(self,  cards: list):
-        self.win= []
         self.cards= cards
+        self.round_points= []
         self.chosen_card=False
 
     def update_cards(self,screen_w ,padx, pady):

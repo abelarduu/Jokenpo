@@ -28,6 +28,7 @@ back_card2= Card(0,0, "back_card.png", 3)
 back_card_bot= Card(0,0, "back_card.png", 2)
 deck_card= Card(0,0, "deck_card.png", 3)
 rect_pos_card= Card(0,0, "rect_pos_card.png", 3)
+rect_deck_card= Card(0,0, "rect_deck_card.png", 3)
 
 #Sounds
 sound_mouse_up=assets.get_sound("mouse_up.mp3")

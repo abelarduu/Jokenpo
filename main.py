@@ -21,23 +21,23 @@ class Game():
 
         elif self.cards_on_the_table[0].type == "rock" and self.cards_on_the_table[1].type == "scissors":   
             bot.cards.append(self.cards_on_the_table.pop(1))
-            player.win.append(True)
-            bot.win.append(False)
+            player.round_points.append(True)
+            bot.round_points.append(False)
 
         elif self.cards_on_the_table[0].type == "paper" and self.cards_on_the_table[1].type == "rock":      
             bot.cards.append(self.cards_on_the_table.pop(1))
-            player.win.append(True)
-            bot.win.append(False)
+            player.round_points.append(True)
+            bot.round_points.append(False)
 
         elif self.cards_on_the_table[0].type == "scissors" and self.cards_on_the_table[1].type == "paper":  
             bot.cards.append(self.cards_on_the_table.pop(1))
-            player.win.append(True)
-            bot.win.append(False)
+            player.round_points.append(True)
+            bot.round_points.append(False)
 
         else:
             player.cards.append(self.cards_on_the_table.pop(0))
-            bot.win.append(True)
-            player.win.append(False)
+            bot.round_points.append(True)
+            player.round_points.append(False)
 
     def interface(self):
         if self.play:
@@ -45,6 +45,11 @@ class Game():
             deck_card.x= screen_w/2 - deck_card.w/2
             deck_card.y= screen_h/2 - deck_card.h/2
             screen.blit(deck_card.img, (deck_card.x, deck_card.y))
+            deck_card.update()
+
+            if deck_card.mouse_up:
+                screen.blit(rect_deck_card.img, (deck_card.x-6, deck_card.y-6))
+
 
             #Player.cards
             for card in player.cards:
@@ -111,7 +116,6 @@ class Game():
                     self.play= True
 
             else: screen.blit(btn_play_down.img, (btn_play.x, btn_play.y))
-        #MOUSE
         screen.blit(mouse, pygame.mouse.get_pos())
 
     def main(self):
