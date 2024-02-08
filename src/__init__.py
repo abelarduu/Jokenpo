@@ -8,7 +8,7 @@ pygame.init()
 screen= pygame.display.set_mode()
 screen_w, screen_h= screen.get_size()
 pygame.display.set_caption("Jokenpô")
-mouse= assets.get_image("mouse.png",2)
+mouse= assets.get_image("mouse.png",3)
 pygame.mouse.set_visible(False)
 BG= (112, 198, 169)
 FPS= 60

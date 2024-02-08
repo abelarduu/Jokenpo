@@ -21,9 +21,11 @@ class Card():
         self.img_rect= self.img.get_rect(center= (self.x + self.img.get_width()/2, self.y + self.img.get_height()/2))
         #Mouse Up
         if self.img_rect.collidepoint(pygame.mouse.get_pos()):
+            self.y = (self.y-10)
             self.mouse_up= True
             
             #Mouse Pressed
             if pygame.mouse.get_pressed()[0]:self.mouse_pressed= True
             else: self.mouse_pressed= False
         else: self.mouse_up= False
+

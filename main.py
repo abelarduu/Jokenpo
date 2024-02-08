@@ -14,42 +14,54 @@ class Game():
     def reset(self):
         pass
 
+    def new_card(self):
+        card_types=["rock_card.png","paper_card.png","scissors_card.png"]
+        card= Card(0, 0, card_types[randint(0, len(card_types)-1)],3)
+        return card
+
     def verify_cards(self):
         if self.cards_on_the_table[0].type == self.cards_on_the_table[1].type:
-            bot.cards.append(self.cards_on_the_table.pop(1))
-            player.cards.append(self.cards_on_the_table.pop(0))
+            self.cards_on_the_table.clear()
+            bot.cards.append(self.new_card())
+            player.get_card_from_the_deck= True
 
         elif self.cards_on_the_table[0].type == "rock" and self.cards_on_the_table[1].type == "scissors":   
-            bot.cards.append(self.cards_on_the_table.pop(1))
+            bot.cards.append(self.new_card())
             player.round_points.append(True)
             bot.round_points.append(False)
 
         elif self.cards_on_the_table[0].type == "paper" and self.cards_on_the_table[1].type == "rock":      
-            bot.cards.append(self.cards_on_the_table.pop(1))
+            bot.cards.append(self.new_card())
             player.round_points.append(True)
             bot.round_points.append(False)
 
         elif self.cards_on_the_table[0].type == "scissors" and self.cards_on_the_table[1].type == "paper":  
-            bot.cards.append(self.cards_on_the_table.pop(1))
+            bot.cards.append(self.new_card())
             player.round_points.append(True)
             bot.round_points.append(False)
 
         else:
-            player.cards.append(self.cards_on_the_table.pop(0))
-            bot.round_points.append(True)
+            player.get_card_from_the_deck= True
             player.round_points.append(False)
+            bot.round_points.append(True)
 
     def interface(self):
         if self.play:
             #Deck
-            deck_card.x= screen_w/2 - deck_card.w/2
-            deck_card.y= screen_h/2 - deck_card.h/2
-            screen.blit(deck_card.img, (deck_card.x, deck_card.y))
-            deck_card.update()
-
             if deck_card.mouse_up:
+                deck_card.y= screen_h/2 - deck_card.h/2 - 10
+                screen.blit(deck_card.img, (deck_card.x, deck_card.y))
                 screen.blit(rect_deck_card.img, (deck_card.x-6, deck_card.y-6))
-
+                #+1 card
+                if deck_card.mouse_pressed and len(player.cards) <5:
+                    if player.get_card_from_the_deck:
+                        player.cards.append(self.new_card())
+                        player.get_card_from_the_deck= False
+            else:
+                deck_card.x= screen_w/2 - deck_card.w/2
+                deck_card.y= screen_h/2 - deck_card.h/2
+                screen.blit(deck_card.img, (deck_card.x, deck_card.y))
+            deck_card.update()
 
             #Player.cards
             for card in player.cards:
@@ -58,10 +70,10 @@ class Game():
 
                 if card.mouse_up:
                     screen.blit(rect_pos_card.img, (card.x-6, card.y-6))
-
-                    if not player.chosen_card:
-                        if card.mouse_pressed and card.y < screen_h - card.h -10:
-                            self.cards_on_the_table[0]= player.select_card(card)
+                    if not player.get_card_from_the_deck:
+                        if not player.chosen_card:
+                                if card.mouse_pressed and card.y < screen_h - card.h -10:
+                                    self.cards_on_the_table[0]= player.select_card(card)
 
             #Bot.cards
             for card in bot.cards:
