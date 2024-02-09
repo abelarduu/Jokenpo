@@ -28,4 +28,3 @@ class Card():
             if pygame.mouse.get_pressed()[0]:self.mouse_pressed= True
             else: self.mouse_pressed= False
         else: self.mouse_up= False
-

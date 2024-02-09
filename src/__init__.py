@@ -18,6 +18,13 @@ icon= assets.get_image("icon.png",5)
 btn_play= Card(0,0,"btn_up.png",5)
 btn_play_down= Card(0,0,"btn_down.png",5)
 
+#HUD
+rect_round= Card(0,0,"rect_round.png",3)
+rect_round_win= Card(0,0,"rect_round_win.png",3)
+hud_player= Card(0,0,"hud_player.png",3)
+hud_bot= Card(0,0,"hud_bot.png",3)
+hud_bot.x= screen_w - hud_bot.w       
+
 #Cards
 rock_card= Card(0,0, "rock_card.png", 3)
 paper_card= Card(0,0, "paper_card.png", 3)
@@ -30,14 +37,7 @@ deck_card= Card(0,0, "deck_card.png", 3)
 rect_pos_card= Card(0,0, "rect_pos_card.png", 3)
 rect_deck_card= Card(0,0, "rect_deck_card.png", 3)
 
+
+
 #Sounds
 sound_mouse_up=assets.get_sound("mouse_up.mp3")
-
-#Players
-player= Player([Card(0,0, "rock_card.png", 3),
-                Card(0,0, "paper_card.png", 3),
-                Card(0,0, "scissors_card.png", 3)])
-
-bot= Player([Card(0,0, "rock_card.png", 3),
-                Card(0,0, "paper_card.png", 3),
-                Card(0,0, "scissors_card.png", 3)])
