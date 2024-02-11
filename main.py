@@ -20,29 +20,29 @@ class Game():
                         Card(0,0, "paper_card.png", 2),
                         Card(0,0, "scissors_card.png", 2)])
 
-    def new_card(self):
+    def new_card(self, scale):
         card_types=["rock_card.png","paper_card.png","scissors_card.png"]
-        card= Card(0, 0, card_types[randint(0, len(card_types)-1)],3)
+        card= Card(0, 0, card_types[randint(0, len(card_types)-1)], scale)
         return card
 
     def verify_cards(self):
         if self.cards_on_the_table[0].type == self.cards_on_the_table[1].type:
             self.cards_on_the_table.clear()
-            self.bot.cards.append(self.new_card())
+            self.bot.cards.append(self.new_card(scale=2))
             self.player.get_card_from_the_deck= True
 
         elif self.cards_on_the_table[0].type == "rock" and self.cards_on_the_table[1].type == "scissors":   
-            self.bot.cards.append(self.new_card())
+            self.bot.cards.append(self.new_card(scale=2))
             self.player.round_points.append(True)
             self.bot.round_points.append(False)
 
         elif self.cards_on_the_table[0].type == "paper" and self.cards_on_the_table[1].type == "rock":      
-            self.bot.cards.append(self.new_card())
+            self.bot.cards.append(self.new_card(scale=2))
             self.player.round_points.append(True)
             self.bot.round_points.append(False)
 
         elif self.cards_on_the_table[0].type == "scissors" and self.cards_on_the_table[1].type == "paper":  
-            self.bot.cards.append(self.new_card())
+            self.bot.cards.append(self.new_card(scale=2))
             self.player.round_points.append(True)
             self.bot.round_points.append(False)
 
@@ -79,7 +79,7 @@ class Game():
                 screen.blit(rect_deck_card.img, (deck_card.pos.x-6, deck_card.pos.y-6))
                 if deck_card.mouse_pressed and len(self.player.cards) <5:
                     if self.player.get_card_from_the_deck:
-                        self.player.cards.append(self.new_card())
+                        self.player.cards.append(self.new_card(scale=3))
                         self.player.get_card_from_the_deck= False
 
             #Player.cards
