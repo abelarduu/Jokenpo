@@ -11,8 +11,8 @@ class Player:
     def update_cards(self,screen_w ,padx, pady):
         x= screen_w/2 - (padx/2 *len(self.cards))
         for card in self.cards:
-            card.x= x
-            card.y= pady
+            card.pos.x= x
+            card.pos.y= pady
             card.update()
             x+= padx
 

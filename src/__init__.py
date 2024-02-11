@@ -23,7 +23,7 @@ rect_round= Card(0,0,"rect_round.png",3)
 rect_round_win= Card(0,0,"rect_round_win.png",3)
 hud_player= Card(0,0,"hud_player.png",3)
 hud_bot= Card(0,0,"hud_bot.png",3)
-hud_bot.x= screen_w - hud_bot.w       
+hud_bot.pos.x= screen_w - hud_bot.w       
 
 #Cards
 rock_card= Card(0,0, "rock_card.png", 3)
