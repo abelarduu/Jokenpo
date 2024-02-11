@@ -16,9 +16,9 @@ class Game():
                     Card(0,0, "paper_card.png", 3),
                     Card(0,0, "scissors_card.png", 3)])
 
-        self.bot= Player([Card(0,0, "rock_card.png", 3),
-                        Card(0,0, "paper_card.png", 3),
-                        Card(0,0, "scissors_card.png", 3)])
+        self.bot= Player([Card(0,0, "rock_card.png", 2),
+                        Card(0,0, "paper_card.png", 2),
+                        Card(0,0, "scissors_card.png", 2)])
 
     def new_card(self):
         card_types=["rock_card.png","paper_card.png","scissors_card.png"]
@@ -100,8 +100,9 @@ class Game():
                 screen.blit(back_card_bot.img, (card.pos.x, card.pos.y))
 
                 if self.player.chosen_card and not self.bot.chosen_card:
-                    self.cards_on_the_table[1]= self.bot.select_card(self.bot.cards[randint(0, len(self.bot.cards)-1)])
-
+                    card_bot= self.bot.select_card(self.bot.cards[randint(0, len(self.bot.cards)-1)])
+                    self.cards_on_the_table[1]= Card(0, 0, f"{card_bot.type}_card.png",3)
+                    
             #Cards on the table
             for card in self.cards_on_the_table:
                 self.cards_on_the_table[0].pos.x=screen_w/2 - screen_w/4 - card.w/2
