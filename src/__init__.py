@@ -35,3 +35,5 @@ rect_deck_card= Card(0,0, "rect_deck_card.png", 3)
 
 #Sounds
 sound_mouse_up=assets.get_sound("mouse_up.mp3")
+music=assets.get_music("music.mp3")
+pygame.mixer.music.play(-1)
