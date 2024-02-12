@@ -26,18 +26,12 @@ hud_bot= Card(0,0,"hud_bot.png",3)
 hud_bot.pos.x= screen_w - hud_bot.w       
 
 #Cards
-rock_card= Card(0,0, "rock_card.png", 3)
-paper_card= Card(0,0, "paper_card.png", 3)
-scissors_card= Card(0,0, "scissors_card.png", 3)
-
+deck_card= Card(0,0, "deck_card.png", 3)
 back_card= Card(0,0, "back_card.png", 3)
 back_card2= Card(0,0, "back_card.png", 3)
 back_card_bot= Card(0,0, "back_card.png", 2)
-deck_card= Card(0,0, "deck_card.png", 3)
 rect_pos_card= Card(0,0, "rect_pos_card.png", 3)
 rect_deck_card= Card(0,0, "rect_deck_card.png", 3)
-
-
 
 #Sounds
 sound_mouse_up=assets.get_sound("mouse_up.mp3")
