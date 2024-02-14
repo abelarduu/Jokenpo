@@ -35,21 +35,25 @@ class Game():
             self.bot.cards.append(self.new_card(scale=2))
             self.player.round_points.append(True)
             self.bot.round_points.append(False)
+            screen.blit(player_victory_ribbon.img, (screen_w/2 - player_victory_ribbon.w/2, 170))
 
         elif self.cards_on_the_table[0].type == "paper" and self.cards_on_the_table[1].type == "rock":      
             self.bot.cards.append(self.new_card(scale=2))
             self.player.round_points.append(True)
             self.bot.round_points.append(False)
+            screen.blit(player_victory_ribbon.img, (screen_w/2 - player_victory_ribbon.w/2, 170))
 
         elif self.cards_on_the_table[0].type == "scissors" and self.cards_on_the_table[1].type == "paper":  
             self.bot.cards.append(self.new_card(scale=2))
             self.player.round_points.append(True)
             self.bot.round_points.append(False)
-
+            screen.blit(player_victory_ribbon.img, (screen_w/2 - player_victory_ribbon.w/2, 170))
+        
         else:
             self.player.get_card_from_the_deck= True
             self.player.round_points.append(False)
             self.bot.round_points.append(True)
+            screen.blit(bot_victory_ribbon.img, (screen_w/2 - bot_victory_ribbon.w/2, 170))
             
     def draw_HUD(self):
         screen.blit(hud_player.img, (hud_player.pos.x, hud_player.pos.y))
@@ -127,13 +131,6 @@ class Game():
                             if card.mouse_up and pygame.mouse.get_pressed()[2]:
                                 self.flip_card= True
 
-                    if self.flip_card and pygame.mouse.get_pressed()[0]:
-                        self.verify_cards()
-
-                        self.cards_on_the_table= [back_card, back_card2]
-                        self.player.chosen_card= False
-                        self.bot.chosen_card= False
-                        self.flip_card= False
                 screen.blit(rect_pos_card.img, (card.pos.x-6, card.pos.y-6))
                 if pygame.key.get_pressed()[K_r]:
                     self.reset()

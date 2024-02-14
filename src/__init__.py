@@ -19,8 +19,10 @@ btn_play= Card(0,0,"btn_up.png",5)
 btn_play_down= Card(0,0,"btn_down.png",5)
 
 #HUD
-rect_round= Card(0,0,"rect_round.png",3)
+player_victory_ribbon= Card(0,0, "player_victory_ribbon.png", 3)
+bot_victory_ribbon= Card(0,0, "bot_victory_ribbon.png", 3)
 rect_round_win= Card(0,0,"rect_round_win.png",3)
+rect_round= Card(0,0,"rect_round.png",3)
 hud_player= Card(0,0,"hud_player.png",3)
 hud_bot= Card(0,0,"hud_bot.png",3)
 hud_bot.pos.x= screen_w - hud_bot.w       
