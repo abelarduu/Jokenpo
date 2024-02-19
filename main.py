@@ -112,7 +112,6 @@ class Game():
                         if self.check_card:
                             self.verify_cards()
                             self.check_card= False
-
                         if pygame.mouse.get_pressed()[0]:
                             self.cards_on_the_table= [back_card, back_card2]
                             self.player.chosen_card= False
@@ -149,7 +148,6 @@ class Game():
             self.interface()
             self.timer.tick(60)
             pygame.display.update()
-
             for event in pygame.event.get():
                 if event.type == QUIT:
                     pygame.quit()
