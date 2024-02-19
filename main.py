@@ -21,12 +21,12 @@ class Game():
                           Card(0,0, (214,0,40,68), 2),
                           Card(0,0, (257,0,40,68), 2)])
 
-    def bot_win(self):
+    def bot_win_round(self):
         self.player.get_card_from_the_deck= True
         self.player.round_points.append(False)
         self.bot.round_points.append(True)
 
-    def player_win(self):
+    def player_win_round(self):
         self.bot.cards.append(self.new_card(scale=2))
         self.player.round_points.append(True)
         self.bot.round_points.append(False)
@@ -40,10 +40,10 @@ class Game():
         if self.cards_on_the_table[0].type == self.cards_on_the_table[1].type:
             self.bot.cards.append(self.new_card(scale=2))
             self.player.get_card_from_the_deck= True
-        elif self.cards_on_the_table[0].type == "rock" and self.cards_on_the_table[1].type == "scissors": self.player_win()
-        elif self.cards_on_the_table[0].type == "paper" and self.cards_on_the_table[1].type == "rock": self.player_win()
-        elif self.cards_on_the_table[0].type == "scissors" and self.cards_on_the_table[1].type == "paper": self.player_win()
-        else: self.bot_win()
+        elif self.cards_on_the_table[0].type == "rock" and self.cards_on_the_table[1].type == "scissors": self.player_win_round()
+        elif self.cards_on_the_table[0].type == "paper" and self.cards_on_the_table[1].type == "rock": self.player_win_round()
+        elif self.cards_on_the_table[0].type == "scissors" and self.cards_on_the_table[1].type == "paper": self.player_win_round()
+        else: self.bot_win_round()
 
     def draw_HUD(self):
         screen.blit(hud_player.img, (hud_player.pos.x, hud_player.pos.y))
@@ -61,6 +61,20 @@ class Game():
             else: screen.blit(rect_round.img,(padx2, 130))
             padx2-=15 + rect_round.w
 
+    def check_victory(self, player, img_victory):
+        wins=[value for value in player.round_points if value]
+        if len(wins) ==3: 
+            screen.blit(img_victory.img,(screen_w/2 - img_victory.w/2, screen_h/2 - img_victory.h/2 - btn_home.h/2))
+            btn_home.pos.x= screen_w/2 - img_victory.w/2+105
+            btn_home.pos.y= screen_h/2 + btn_home.h/2+55
+            btn_home.update()
+
+            if btn_home.mouse_up:
+                screen.blit(btn_home.img, btn_home.pos)
+                if btn_home.mouse_pressed: 
+                    self.reset()
+            else: screen.blit(btn_home_down, btn_home.pos)
+
     def interface(self):
         if self.play:
             self.draw_HUD()
@@ -71,7 +85,7 @@ class Game():
             screen.blit(deck_card.img, deck_card.pos)
             if deck_card.mouse_up:
                 screen.blit(rect_deck_card.img, deck_card.pos-(6,6))
-                if deck_card.mouse_pressed and len(self.player.cards) <5:
+                if deck_card.mouse_pressed:
                     if self.player.get_card_from_the_deck:
                         self.player.cards.append(self.new_card(scale=3))
                         self.player.get_card_from_the_deck= False
@@ -125,8 +139,8 @@ class Game():
                             self.check_card= True
 
                 screen.blit(rect_pos_card.img, card.pos-(6,6))
-                if pygame.key.get_pressed()[K_r]:
-                    self.reset()
+                self.check_victory(self.player, player_victory)
+                self.check_victory(self.bot, bot_victory)
         else:
             #Menu Inicial
             screen.blit(icon, (screen_w/2 - icon.get_width()/2, screen_h/2 - icon.get_height()/2 - btn_play.h/2))
@@ -138,8 +152,7 @@ class Game():
                 screen.blit(btn_play.img, btn_play.pos)
                 if btn_play.mouse_pressed: 
                     self.play= True
-
-            else: screen.blit(btn_play_down.img, btn_play.pos)
+            else: screen.blit(btn_play_down, btn_play.pos)
         screen.blit(mouse, pygame.mouse.get_pos())
 
     def run(self):

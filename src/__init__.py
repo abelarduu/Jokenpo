@@ -16,14 +16,16 @@ FPS= 60
 
 #MENU
 icon= assets.get_image((0,0,128,68), 5)
-btn_play= Card(0,0, (0,105,128,35), 5)
-btn_play_down= Card(0,0, (0,70,128,35), 5)
+btn_play= Card(0,0, (0,105,128,33), 5)
+btn_home= Card(0,0, (0,175,128,33), 5)
+btn_play_down= assets.get_image((0,70,128,33), 5)
+btn_home_down= assets.get_image((0,140,128,33), 5)
 
 #HUD
 player_victory_ribbon= Card(0,0, (130,153,150,19), 3)
 bot_victory_ribbon= Card(0,0, (130,174,150,19), 3)
-player_victory= Card(0,0, (0,210,170,68), 4)
-bot_victory= Card(0,0, (172,210,170,68), 4)
+player_victory= Card(0,0, (0,210,170,68), 5)
+bot_victory= Card(0,0, (172,210,170,68), 5)
 rect_round_win= Card(0,0,(280,70,14,14), 3)
 rect_round= Card(0,0,(264,70,14,14), 3)
 hud_player= Card(0,0,(299,0,104,41),3)
