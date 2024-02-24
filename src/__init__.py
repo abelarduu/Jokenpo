@@ -22,8 +22,8 @@ btn_play_down= assets.get_image((0,70,128,33), 5)
 btn_home_down= assets.get_image((0,140,128,33), 5)
 
 #HUD
-player_victory_ribbon= Card(0,0, (130,153,150,19), 3)
-bot_victory_ribbon= Card(0,0, (130,174,150,19), 3)
+player_victory_ribbon= Card(0,0, (130,152,150,20), 3)
+bot_victory_ribbon= Card(0,0, (130,174,150,20), 3)
 player_victory= Card(0,0, (0,210,170,68), 5)
 bot_victory= Card(0,0, (172,210,170,68), 5)
 rect_round_win= Card(0,0,(280,70,14,14), 3)

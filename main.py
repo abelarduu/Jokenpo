@@ -61,9 +61,14 @@ class Game():
             else: screen.blit(rect_round.img,(padx2, 130))
             padx2-=15 + rect_round.w
 
-    def check_victory(self, player, img_victory):
-        wins=[value for value in player.round_points if value]
-        if len(wins) ==3: 
+    def check_victory(self, player, img_victory_ribbon ,img_victory):
+        player.wins=[value for value in player.round_points if value]
+        if len(player.wins) >0: 
+            if player.round_points[-1] and self.flip_card:
+                if not self.cards_on_the_table[0].type == self.cards_on_the_table[1].type:
+                    screen.blit(img_victory_ribbon.img,(screen_w/2 - img_victory_ribbon.w/2, self.cards_on_the_table[1].h-30))
+
+        if len(player.wins) ==3: 
             screen.blit(img_victory.img,(screen_w/2 - img_victory.w/2, screen_h/2 - img_victory.h/2 - btn_home.h/2))
             btn_home.pos.x= screen_w/2 - img_victory.w/2+105
             btn_home.pos.y= screen_h/2 + btn_home.h/2+55
@@ -96,7 +101,7 @@ class Game():
                 screen.blit(card.img, card.pos)
 
                 if card.mouse_up:
-                    screen.blit(rect_pos_card.img, card.pos -(6,6))
+                    screen.blit(rect_pos_card.img, card.pos - (6,6))
                     if not self.player.get_card_from_the_deck:
                         if not self.player.chosen_card:
                             if card.mouse_pressed and card.pos.y < screen_h - card.h -10:
@@ -139,8 +144,8 @@ class Game():
                             self.check_card= True
 
                 screen.blit(rect_pos_card.img, card.pos-(6,6))
-                self.check_victory(self.player, player_victory)
-                self.check_victory(self.bot, bot_victory)
+                self.check_victory(self.bot, bot_victory_ribbon, bot_victory)
+                self.check_victory(self.player, player_victory_ribbon, player_victory)
         else:
             #Menu Inicial
             screen.blit(icon, (screen_w/2 - icon.get_width()/2, screen_h/2 - icon.get_height()/2 - btn_play.h/2))

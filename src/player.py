@@ -7,6 +7,7 @@ class Player:
         self.round_points= []
         self.chosen_card=False
         self.get_card_from_the_deck= False
+        self.wins= []
 
     def update_cards(self,screen_w ,padx, pady):
         x= screen_w/2 - (padx/2 *len(self.cards))
