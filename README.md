@@ -1,5 +1,5 @@
 <div align="center">
-<img src="img/icon.png" type="image/png" alt="Ache O Anel Icon">
+<img src="img/icon.png" type="image/png" alt="Jokenpô Icon">
 
 ### Sobre o projeto
 ### 🚧⚠️Em desenvolvimento...⚠️🚧
