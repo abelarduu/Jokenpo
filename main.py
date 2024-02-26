@@ -63,9 +63,11 @@ class Game():
 
     def check_victory(self, player, img_victory_ribbon ,img_victory):
         player.wins=[value for value in player.round_points if value]
-        if len(player.wins) >0: 
-            if player.round_points[-1] and self.flip_card:
-                if not self.cards_on_the_table[0].type == self.cards_on_the_table[1].type:
+        if self.flip_card and not self.check_card:
+            if self.cards_on_the_table[0].type == self.cards_on_the_table[1].type:
+                screen.blit(tie_ribbon.img,(screen_w/2 - tie_ribbon.w/2, self.cards_on_the_table[1].h-30))
+            else:
+                 if len(player.round_points) >0 and player.round_points[-1]:
                     screen.blit(img_victory_ribbon.img,(screen_w/2 - img_victory_ribbon.w/2, self.cards_on_the_table[1].h-30))
 
         if len(player.wins) ==3: 
