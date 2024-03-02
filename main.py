@@ -11,6 +11,7 @@ class Game():
         self.play= False
         self.flip_card= False
         self.check_card= False
+        self.mouse_released= False
         self.timer= pygame.time.Clock()
         self.cards_on_the_table= [back_card, back_card2]
         self.player= Player([Card(0,0, (172,0,40,68), 3),
@@ -78,8 +79,9 @@ class Game():
 
             if btn_home.mouse_up:
                 screen.blit(btn_home.img, btn_home.pos)
-                if btn_home.mouse_pressed: 
+                if self.mouse_released: 
                     self.reset()
+                    
             else: screen.blit(btn_home_down, btn_home.pos)
 
     def interface(self):
@@ -157,7 +159,7 @@ class Game():
 
             if btn_play.mouse_up:
                 screen.blit(btn_play.img, btn_play.pos)
-                if btn_play.mouse_pressed: 
+                if self.mouse_released: 
                     self.play= True
             else: screen.blit(btn_play_down, btn_play.pos)
         screen.blit(mouse, pygame.mouse.get_pos())
@@ -169,6 +171,10 @@ class Game():
             self.timer.tick(60)
             pygame.display.update()
             for event in pygame.event.get():
+                if event.type == MOUSEBUTTONUP:
+                    self.mouse_released= True
+                else: self.mouse_released= False
+
                 if event.type == QUIT:
                     pygame.quit()
                     quit()
