@@ -32,7 +32,7 @@ class Game():
         self.player.round_points.append(True)
         self.bot.round_points.append(False)
 
-    def new_card(self, scale):
+    def new_card(self, scale) -> Card:
         cards_coordinates=[(172,0,40,68),(214,0,40,68),(257,0,40,68)]
         card= Card(0, 0, cards_coordinates[randint(0, len(cards_coordinates)-1)], scale)
         return card

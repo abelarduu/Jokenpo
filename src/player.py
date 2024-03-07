@@ -1,5 +1,6 @@
 
 import pygame
+from src.cards import Card
 
 class Player:
     def __init__(self,  cards: list):
@@ -17,7 +18,7 @@ class Player:
             card.update()
             x+= padx
 
-    def select_card(self, card):
+    def select_card(self, card) -> Card:
         if not self.chosen_card:
             self.cards.remove(card)
             self.chosen_card= True
