@@ -9,6 +9,7 @@ class Game():
 
     def reset(self):
         self.play= False
+        self.tutorial= False
         self.flip_card= False
         self.check_card= False
         self.mouse_released= False
@@ -85,7 +86,17 @@ class Game():
             else: screen.blit(btn_home_down, btn_home.pos)
 
     def interface(self):
-        if self.play:
+        if self.tutorial:
+            screen.blit(tutorial_ribbon.img,(screen_w/2 - tutorial_ribbon.w/2, tutorial_ribbon.h))
+            screen.blit(tip1.img, (screen_w/3 - tip1.w/2, screen_h/2 - tip1.h/2))
+            screen.blit(tip2.img, (screen_w/3 + screen_w/3 - tip2.w/2, screen_h/2 - tip2.h/2))
+            screen.blit(tutorial_text.img, (screen_w/2 - tutorial_text.w/2, screen_h/2 +  screen_h/3 - tutorial_text.h/2))
+
+            if self.mouse_released: 
+                self.tutorial=False
+                self.play= True
+
+        elif self.play:
             self.draw_HUD()
             deck_card.pos.x= screen_w/2 - deck_card.w/2
             deck_card.pos.y= screen_h/2 - deck_card.h/2
@@ -160,7 +171,9 @@ class Game():
             if btn_play.mouse_up:
                 screen.blit(btn_play.img, btn_play.pos)
                 if self.mouse_released: 
-                    self.play= True
+                    self.tutorial= True
+                    self.mouse_released= False
+
             else: screen.blit(btn_play_down, btn_play.pos)
         screen.blit(mouse, pygame.mouse.get_pos())
 

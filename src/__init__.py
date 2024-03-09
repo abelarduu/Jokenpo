@@ -21,12 +21,18 @@ btn_home= Card(0,0, (0,175,128,33), 5)
 btn_play_down= assets.get_image((0,70,128,33), 5)
 btn_home_down= assets.get_image((0,140,128,33), 5)
 
+#TUTORIAL
+tutorial_ribbon = Card(0,0, (0,360,150,20), 3)
+tip1= Card(0,0, (172,218,113,138), 3)
+tip2= Card(0,0, (287,218,113,138), 3)
+tutorial_text= Card(0,0, (172,358,138,12), 3)
+
 #HUD
 player_victory_ribbon= Card(0,0, (130,152,150,20), 3)
 bot_victory_ribbon= Card(0,0, (130,174,150,20), 3)
 tie_ribbon= Card(0,0, (130,196,150,20), 3)
 player_victory= Card(0,0, (0,218,170,68), 5)
-bot_victory= Card(0,0, (172,218,170,68), 5)
+bot_victory= Card(0,0, (0,288,170,68), 5)
 rect_round_win= Card(0,0,(280,70,14,14), 3)
 rect_round= Card(0,0,(264,70,14,14), 3)
 hud_player= Card(0,0,(299,0,104,41),3)
