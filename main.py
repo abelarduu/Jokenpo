@@ -67,10 +67,10 @@ class Game():
         player.wins=[value for value in player.round_points if value]
         if self.flip_card and not self.check_card:
             if self.cards_on_the_table[0].type == self.cards_on_the_table[1].type:
-                screen.blit(tie_ribbon.img,(screen_w/2 - tie_ribbon.w/2, self.cards_on_the_table[1].h-30))
+                screen.blit(tie_ribbon.img,(screen_w/2 - tie_ribbon.w/2, self.cards_on_the_table[1].h-40))
             else:
                  if len(player.round_points) >0 and player.round_points[-1]:
-                    screen.blit(img_victory_ribbon.img,(screen_w/2 - img_victory_ribbon.w/2, self.cards_on_the_table[1].h-30))
+                    screen.blit(img_victory_ribbon.img,(screen_w/2 - img_victory_ribbon.w/2, self.cards_on_the_table[1].h-40))
 
         if len(player.wins) ==3: 
             screen.blit(img_victory.img,(screen_w/2 - img_victory.w/2, screen_h/2 - img_victory.h/2 - btn_home.h/2))
@@ -159,6 +159,9 @@ class Game():
                             self.check_card= True
 
                 screen.blit(rect_pos_card.img, card.pos-(6,6))
+                if self.player.get_card_from_the_deck:
+                    screen.blit(more_one_card_text.img, (screen_w/2 - more_one_card_text.w/2, screen_h/2 - more_one_card_text.h/2 - btn_home.h/2-72))
+
                 self.check_victory(self.bot, bot_victory_ribbon, bot_victory)
                 self.check_victory(self.player, player_victory_ribbon, player_victory)
         else:

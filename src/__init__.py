@@ -26,6 +26,7 @@ tutorial_ribbon = Card(0,0, (0,360,150,20), 3)
 tip1= Card(0,0, (172,218,113,138), 3)
 tip2= Card(0,0, (287,218,113,138), 3)
 tutorial_text= Card(0,0, (172,358,138,12), 3)
+more_one_card_text= Card(0,0, (172,370,92,11), 3)
 
 #HUD
 player_victory_ribbon= Card(0,0, (130,152,150,20), 3)
