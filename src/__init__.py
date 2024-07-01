@@ -2,6 +2,8 @@ import pygame
 from src import assets
 from src.cards import Card
 from src.player import Player
+from pygame.locals import *
+from random import randint
 
 #INIT
 pygame.init()

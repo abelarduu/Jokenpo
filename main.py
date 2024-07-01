@@ -1,7 +1,4 @@
-import pygame
 from src import *
-from pygame.locals import *
-from random import randint
 
 class Game():
     def __init__(self):
